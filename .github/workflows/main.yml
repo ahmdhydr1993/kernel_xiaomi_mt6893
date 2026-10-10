@@ -15,7 +15,7 @@ jobs:
       - name: Setup Build Environment
         run: |
           sudo apt-get update
-          sudo apt-get install -y bc build-essential libncurses5-dev libssl-dev libelf-dev bison flex libssl-dev libcrypto++-dev lzop liblz4-tool lib32z1-dev gitcc ccache
+          sudo apt-get install -y bc build-essential libncurses5-dev libssl-dev libelf-dev bison flex libssl-dev libcrypto++-dev lzop liblz4-tool lib32z1-dev git ccache
 
       - name: Download Clang Compiler
         run: |
