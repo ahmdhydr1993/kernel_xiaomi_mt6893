@@ -21,12 +21,12 @@ jobs:
         run: |
           mkdir -p $GITHUB_WORKSPACE/clang
           cd $GITHUB_WORKSPACE/clang
-          wget https://googlesource.com
-          tar -xf clang-r450784d.tar.gz
+          git clone --depth=1 https://googlesource.com
+
 
       - name: Compile Kernel
         run: |
-          export PATH=$GITHUB_WORKSPACE/clang/bin:$PATH
+          export PATH=$GITHUB_WORKSPACE/clang/linux-x86/clang-stable/bin:$PATH
           export ARCH=arm64
           export SUBARCH=arm64
           export CROSS_COMPILE=aarch64-linux-gnu-
