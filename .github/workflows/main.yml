@@ -1,44 +1,30 @@
-name: Build Kernel
+name: Build Poco F3 GT Kernel
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          submodules: 'recursive'
-          fetch-depth: 1
 
-      - name: Setup Build Environment
+      - name: Setup Dynamic Environment
         run: |
           sudo apt-get update
-          sudo apt-get install -y bc build-essential libncurses5-dev libssl-dev libelf-dev bison flex libssl-dev libcrypto++-dev lzop liblz4-tool lib32z1-dev git ccache
+          sudo apt-get install -y bc build-essential libncurses5-dev libssl-dev libelf-dev bison flex git ccache python3
 
-      - name: Download Clang Compiler
+      - name: Dynamic Kernel Construction
         run: |
-          mkdir -p $GITHUB_WORKSPACE/clang
-          cd $GITHUB_WORKSPACE/clang
-          sudo apt-get install -y clang-15
-          ln -s /usr/bin/clang-15 ./clang
-
-
-
-      - name: Compile Kernel
-        run: |
-          export PATH=$GITHUB_WORKSPACE/clang:$PATH
           export ARCH=arm64
           export SUBARCH=arm64
           export CROSS_COMPILE=aarch64-linux-gnu-
-          export CC=clang
           make O=out ares_defconfig
           make O=out -j$(nproc --all)
 
-      - name: Upload Kernel Artifact
+      - name: Package Network Kernel Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Poco-F3-GT-NetHunter-Kernel
           path: out/arch/arm64/boot/Image.gz-dtb
-          
+
